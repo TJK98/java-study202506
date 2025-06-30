@@ -3,22 +3,32 @@ package chap1_5.member;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-// 역할: 회원 한 명의 회원 정보를 잘 가지고 있어야 함
+// 역할: 회원 한 명의 회원 정보를 잘 가지고 있어야 함.
 public class Member {
     String email; // 본질 식별자
     String password;
     String memberName;
     String id; // 인조 식별자 ( -> 랜덤값: 시스템이 자동 생성, 식별자가 가능 할려면 필수값이여야 한다. 값이 바뀌면 안 된다. 민감 정보나 개인 정보는 유출하면 안 된다)
-    Gender gender;
+    Gender gender; // MALE, FEMALE
     int age;
-    LocalDateTime registerDate; // 회원 가입 일시
+    LocalDateTime registerDate; // 회원가입 일시
 
-    // boolean isdeleted = false;
+    boolean isDeleted = false;
 
-    // 생성자 : 객체가 처음 생성될 떄 필드를 초기화
+    // 생성자 : 객체가 처음 생성될 때 필드를 초기화
+    public Member(int age, String email, String password, String memberName, Gender gender) {
+        this.age = age;
+        this.email = email;
+        this.password = password;
+        this.memberName = memberName;
+        this.gender = gender;
+        this.id = UUID.randomUUID().toString();
+        this.registerDate = LocalDateTime.now();
+    }
+
     @Override
     public String toString() {
-        return "member{" +
+        return "Member{" +
                 "email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", memberName='" + memberName + '\'' +
@@ -27,16 +37,6 @@ public class Member {
                 ", age=" + age +
                 ", registerDate=" + registerDate +
                 '}';
-    }
-
-    public Member(String password, String memberName, String email, Gender gender, int age) {
-        this.password = password;
-        this.memberName = memberName;
-        this.email = email;
-        this.gender = gender;
-        this.age = age;
-        this.id = UUID.randomUUID().toString();
-        this.registerDate = LocalDateTime.now();
     }
 
     /**
@@ -55,6 +55,14 @@ public class Member {
                 java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
         );
         System.out.printf("이름: %s, 이메일: %s, 성별: %s, 나이: %d세, 가입일: %s\n",
-                memberName, email, gender, age, formattedDate);
+                memberName, email, gender == Gender.MALE ? "남자" : "여자", age, formattedDate);
+    }
+
+    public void updateNewPassword(String newPassword) {
+        this.password = newPassword;
+    }
+
+    public boolean isPasswordMatch(String inputPassword) {
+        return this.password.equals(inputPassword);
     }
 }

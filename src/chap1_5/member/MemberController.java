@@ -23,10 +23,9 @@ public class MemberController {
     }
 
     /**
-     * 사용자가 선택한 메뉴 번호에 따라 해당하는 기능을 수행하는 메서드입니다.
-     * 각 메뉴 번호별로 회원 정보 등록, 조회, 수정, 삭제, 복구 등의 작업을 처리합니다.
+     * 사용자가 입력한 메뉴 번호에 따라 해당하는 회원 관리 기능을 실행하는 메서드입니다.
      *
-     * @param menuNum 사용자가 선택한 메뉴 번호 문자열
+     * @param menuNum 사용자가 선택한 메뉴 번호를 나타내는 문자열
      */
     void processMenu(String menuNum) {
         switch (menuNum) {
@@ -37,20 +36,20 @@ public class MemberController {
                 showAllMembers();
                 break;
             case "3":
-                System.out.println("\n# 회원 개별조회를 시작합니다.");
+                showDetailMember();
                 break;
             case "4":
-                System.out.println("\n# 회원 정보를 수정합니다.");
+                changePassword();
                 break;
             case "5":
-                // 이메일을 입력받고 있으면 패스워드도 입력 받아서 삭제
-                System.out.println("\n# 회원 정보를 삭제합니다.");
+                if (mr.size() == 0) {
+                    System.out.println("# 삭제할 회원이 없습니다.");
+                    return;
+                }
+                deleteMember();
                 break;
             case "6":
-                // hint
-                // 1. 배열을 2개 관리함
-                // 2. 논리적 삭제를 구현( 실제로 배열에 지우는 게 아니라 지우는 척함)
-                System.out.println("\n# 삭제된 회원 정보를 복구합니다.");
+                restoreMember();
                 break;
             case "7":
                 System.out.println("\n# 프로그램을 종료합니다.");
@@ -63,21 +62,75 @@ public class MemberController {
         prompt("======== 계속하시려면 Enter... =========");
     }
 
+    void deleteMember() {
+        // 이메일을 입력받고 있으면 패스워드도 입력받아서 삭제
+        System.out.println("\n# 회원 정보를 삭제합니다.");
+        Member foundMember = findMember("삭제");
+
+        if (foundMember != null) {
+            // 삭제 전에 패스워드를 확인
+            String inputPassword = prompt("# 비밀번호: ");
+            if (foundMember.isPasswordMatch(inputPassword)) {
+                // 실제 삭제 진행
+                mr.removeMember(foundMember.email);
+                System.out.println("\n# 회원 탈퇴처리가 완료되었습니다!");
+            } else {
+                System.out.println("\n# 비밀번호가 틀렸습니다. 삭제를 취소합니다.");
+            }
+        } else {
+            System.out.println("\n# 조회 결과가 없습니다!");
+        }
+    }
+
+    void changePassword() {
+        System.out.println("\n# 회원 정보를 패스워드를 수정합니다.");
+        Member foundMember = findMember("수정");
+
+        if (foundMember != null) {
+            // 비밀번호 수정 진행
+            String newPassword = prompt("# 새 비밀번호 : ");
+
+            // 실질적인 데이터 수정 처리
+            foundMember.updateNewPassword(newPassword);
+
+            System.out.println("\n# 변경이 완료되었습니다.");
+
+        } else {
+            System.out.println("\n# 조회 결과가 없습니다!");
+        }
+    }
+
+    Member findMember(String message) {
+        String email = prompt("# %s 대상의 이메일: ".formatted(message));
+        return mr.findMemberByEmail(email);
+    }
+
+    void showDetailMember() {
+        System.out.println("\n# 회원 개별조회를 시작합니다.");
+        Member foundMember = findMember("조회");
+        if (foundMember != null) {
+            // 개별정보 출력
+            foundMember.inform();
+        } else {
+            System.out.println("\n# 조회 결과가 없습니다!");
+        }
+    }
+
     void signUp() {
         System.out.println("\n# 회원 정보 등록을 시작합니다.");
         String email = checkDuplicateEmail();
         String password = prompt("# 패스워드: ");
         String memberName = prompt("# 이름: ");
-        Gender genderStr = inputCorrectGender();
+        Gender gender = inputCorrectGender();
         String ageStr = prompt("# 나이: ");
 
         // 회원 배열에 추가
         mr.addMember(new Member(
+                Integer.parseInt(ageStr),
+                email,
                 password,
                 memberName,
-                email,
-                genderStr,
-                Integer.parseInt(ageStr)
+                gender
         ));
 
         System.out.println("\n# 회원가입에 성공했습니다.");
@@ -93,7 +146,7 @@ public class MemberController {
     String checkDuplicateEmail() {
         while (true) {
             String email = prompt("# 이메일: ");
-            if (!mr.isDuplicateEamil(email)) {
+            if (!mr.isDuplicateEmail(email)) {
                 // 중복이 아닌 경우
                 return email;
             }
@@ -124,9 +177,16 @@ public class MemberController {
         }
     }
 
+
     /**
-     * 모든 회원 정보를 조회하고 출력하는 메서드입니다.
-     * MemberRepository로부터 회원 배열을 가져와서 각 회원 정보를 콘솔에 출력합니다.
+     * 전체 회원 목록을 출력하는 메서드입니다.
+     *
+     * 이 메서드는 {@code MemberRepository} 객체를 통해 저장된 모든 회원 정보를 가져와
+     * 출력 형식에 따라 콘솔에 표시합니다.
+     *
+     * 기능:
+     * 1. 회원 목록 데이터를 조회합니다.
+     * 2. 콘솔에 회원 정보를 출력합니다.
      */
     void showAllMembers() {
         System.out.println("\n# 전체 회원 정보를 조회합니다.");
@@ -163,5 +223,17 @@ public class MemberController {
     String prompt(String message) {
         System.out.print(message);
         return sc.nextLine();
+    }
+
+    void restoreMember() {
+        String inputEmail = prompt("# 복구 대상의 이메일: ");
+        // 복구 대상 탐색 및 복구 처리
+        boolean flag = mr.restore(inputEmail);
+
+        if (flag) {
+            System.out.println("\n# 복구처리가 완료되었습니다.");
+        } else {
+            System.out.println("\n# 복구에 실패했습니다.");
+        }
     }
 }

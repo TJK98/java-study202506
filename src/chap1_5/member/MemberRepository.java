@@ -5,28 +5,35 @@ package chap1_5.member;
  * CRUD 작업을 수행할 수 있는 메서드를 제공하며 회원 추가,
  * 회원 목록 조회, 특정 조건으로 회원 검색 등의 기능을 수행합니다.
  *
- * @author TJK98
+ * @author Hong
  * @since 2025.06.27 ~
  * @version 1.0
  */
-
 // 회원들의 CRUD를 담당하는 창고(데이터베이스) 역할
 public class MemberRepository {
 
     // 회원들을 저장할 배열
+    // String[] => ['', '', '']
+    // int[] => [10, 20, 30]
+    // Member[] => [{ id: '', memberName: '' }, {}, {}]
     Member[] memberList; // 가입된 회원 배열
+
+    Member[] restoreList; // 복구를 위한 배열
 
     MemberRepository() {
         memberList = new Member[] {
-                new Member("1234", "Kim", "kim@naver.com", Gender.MALE, 20)
-                , new Member("5678", "Park", "park@naver.com", Gender.FEMALE, 30)
-                , new Member("91011", "Choi", "choi@naver.com", Gender.MALE, 40)
+                new Member(15, "abc123@def.com", "1234", "콩벌레", Gender.MALE)
+                , new Member(25, "fff@ggg.com", "5678", "팥죽이", Gender.FEMALE)
+                , new Member(35, "xxx@ccc.com", "9876", "카레빵", Gender.FEMALE)
         };
+
+        restoreList = new Member[0];
+
     }
 
     // 메서드
 
-    // 회원 배열을 리턴하는 매서드
+    // 회원 배열을 리턴하는 메서드
     Member[] getMembers() {
         return this.memberList;
     }
@@ -70,23 +77,87 @@ public class MemberRepository {
      * @return 해당 이메일을 가진 회원 객체,
      * 해당 이메일을 가진 회원이 없는 경우 null
      *
-     * @author - TJK
+     * @author Mr. Hong
      * @since 2025.06.27
      */
-    // 탐색 기능 (특정 회원 찾는 기능)
-    Member findMemberByEmail(String targetemail) {
-        for (Member member : memberList) {
-            if (targetemail.equals(member.email)) {
-                return member;
-            }
-        }
-        return null; // 탐색에 실패한 경우
+    Member findMemberByEmail(String targetEmail) {
+        int index = findIndexByEmail(targetEmail);
+        return index != -1 ? memberList[index] : null;
     }
 
-    boolean isDuplicateEamil(String inputEmail) {
+    /**
+     * 주어진 이메일 주소가 중복되었는지 확인합니다.
+     * 이메일이 중복된 경우 true를 반환하고, 그렇지 않으면 false를 반환합니다.
+     *
+     * @param inputEmail 확인할 이메일 주소
+     * @return 이메일이 중복된 경우 true, 중복되지 않은 경우 false
+     */
+    boolean isDuplicateEmail(String inputEmail) {
         return findMemberByEmail(inputEmail) != null;
     }
+
+    int findIndexByEmail(String email) {
+        for (int i = 0; i < memberList.length; i++) {
+            if (memberList[i].email.equals(email)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void removeMember(String email) {
+        // 삭제 대상의 인덱스를 알아와야 함
+        int index = findIndexByEmail(email);
+
+        // 복구 배열에 백업
+        addRestore(memberList[index]);
+
+        for (int i = index; i < memberList.length - 1; i++) {
+            memberList[i] = memberList[i + 1];
+        }
+        Member[] temp = new Member[memberList.length - 1];
+        for (int i = 0; i < temp.length; i++) {
+            temp[i] = memberList[i];
+        }
+        memberList = temp;
+    }
+
+    // 회원 목록에 새로운 회원 1명을 추가하는 메서드
+    void addRestore(Member newMember) {
+        // push
+        Member[] temp = new Member[restoreList.length + 1];
+        for (int i = 0; i < restoreList.length; i++) {
+            temp[i] = restoreList[i];
+        }
+        temp[temp.length - 1] = newMember;
+        restoreList = temp;
+    }
+
+    public boolean restore(String inputEmail) {
+        // 복구대상을 탐색하여 복구배열에서 인덱스를 확인한 후
+        int index = -1;
+        for (int i = 0; i < restoreList.length; i++) {
+            if (inputEmail.equals(restoreList[i].email)) {
+                index = i;
+                break;
+            }
+        }
+        if (index == -1) {
+            return false;
+        }
+
+        // 원본 회원 배열에 추가
+        addMember(restoreList[index]);
+
+        // 복구배열에서 제거 후
+        for (int i = index; i < restoreList.length - 1; i++) {
+            restoreList[i] = restoreList[i + 1];
+        }
+        Member[] temp = new Member[restoreList.length - 1];
+        for (int i = 0; i < temp.length; i++) {
+            temp[i] = restoreList[i];
+        }
+        restoreList = temp;
+        return true;
+    }
 }
-
-
-
