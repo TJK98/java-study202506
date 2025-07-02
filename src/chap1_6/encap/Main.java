@@ -1,16 +1,18 @@
 package chap1_6.encap;
 
 public class Main {
+
     public static void main(String[] args) {
 
-
-        Car myCar = new Car();
-        // 시동을 걸기 위해서 먼저 엔진 오일을 분사
-        // 실린더 작동 -> 시동 버튼 누르고 -> 시동 걸기
+        Car myCar = new Car("모닝");
+        // 시동 걸기 위해서 먼저 엔진오일 분사 ->
+        //  시동버튼 누르고 -> 시동 걸기 -> 실린더 작동
         myCar.pressButton();
 
+//        myCar.model = "페라리488 스파이더";
         // 기어 변속
-        myCar.mode = "D";
-        System.out.println("현재 모드:" + myCar.mode);
+        myCar.setMode("XYZ");
+        System.out.println("현재 모드: " + myCar.getMode());
+        System.out.println("모델명: " + myCar.getModel());
     }
 }
