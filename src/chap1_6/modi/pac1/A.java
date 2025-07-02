@@ -24,6 +24,8 @@ public class A {
         m1();
         m2();
         m3();
+
+        new B();
     }
     A(int a) {}    // default 제한
     private A(double b) {}
