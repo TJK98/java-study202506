@@ -8,7 +8,7 @@ package chap1_7.inherit.player;
             /      |     \
         Warrior  Mage    Hunter
           |   \   |
-   Berserker   WarMage(X)
+   Berserker   WarMage
  */
 
 
@@ -29,5 +29,13 @@ public class Main {
 
         hunter.showStatus();
         hunter.attack();
+
+        System.out.println("=========");
+
+//        mage.fireBall(warrior);
+//        mage.fireBall(hunter);
+//        mage.fireBall(new Mage("법사짱킹킹맨"));
+        mage.fireBall(mage);
+
     }
 }
