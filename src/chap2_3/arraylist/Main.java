@@ -68,5 +68,11 @@ public class Main {
 
         System.out.println(hobbies);
 
+        System.out.println("==========");
+
+        for (String h : hobbies) {
+            System.out.println(h);
+        }
+
     }
 }
