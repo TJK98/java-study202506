@@ -6,6 +6,14 @@ import java.util.Set;
 // 가수
 public class Artist {
 
+    @Override
+    public String toString() {
+        return "Artist{" +
+                "artistName='" + artistName + '\'' +
+                ", songList=" + songList +
+                '}';
+    }
+
     private final String artistName; // 가수명
     private final Set<String> songList; // 노래목록
 
