@@ -8,14 +8,16 @@ public class ArrayCopy {
     public static void main(String[] args) {
 
         String[] pets = {"멍멍이", "야옹이", "짹짹이"};
-        // String[] petsCopy = pets; // 주소 복사
-       /* String[] petsCopy = new String[pets.length]; // 배열 객체 복사
-        // 배열 값 복사
-        for (int i = 0; i < petsCopy.length; i++) {
-            petsCopy[i] =pets[i];
-        }*/
+//        String[] petsCopy = pets; // 주소 복사다. 배열 복사는 안 된다.
 
-        String[] petsCopy = Arrays.copyOf(pets, pets.length);
+//        // 배열 복사 알고리즘
+//        String[] petsCopy = new String[pets.length]; // 배열 객체 복사
+//        // 배열 값 복사
+//        for (int i = 0; i < petsCopy.length; i++) {
+//            petsCopy[i] =pets[i];
+//        }
+
+        String[] petsCopy = Arrays.copyOf(pets, pets.length); // 배열 복사
 
         petsCopy[1] = "어흥이";
 

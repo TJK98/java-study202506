@@ -14,7 +14,7 @@ public class ArrayPop {
         // 1. 기존 사이즈 보다 1개 작은 배열 생성
         int[] temp = new int[numbers.length - 1];
 
-        // 2. 새 배열의 맨 끝 데이터만 빼고 복사
+        // 2. 새 배열의 맨 끝 데이터만 빼고 복사, 반복문을 한 칸 적게 돌리면 된다.
         for (int i = 0; i < temp.length; i++) {
             temp[i] = numbers[i];
         }

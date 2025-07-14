@@ -4,12 +4,12 @@ public class DataType {
 
     public static void main(String[] args) {
 
-        // 정적 타이핑 언어
-        int age = 20;
-        double pi = 3.14;
-        char c = 'A';
-        String greeting = "hello";
-        boolean flag = true;
+        // 정적 타이핑 언어 (safety 하다)
+        int age = 20; // 정수형 저장
+        double pi = 3.14; // 실수형 저장
+        char c = 'A'; // 한 글자 저장
+        String greeting = "hello"; // 문자열 저장
+        boolean flag = true; // 논리값 저장
 
         // 정수 타입 (byte: 1, short: 2, int: 4 long: 8
         // 1byte == 8bit -> 10진수 정수 8 -> 0 0001000
@@ -18,10 +18,10 @@ public class DataType {
         byte x1 = 127;
         short x2 = 32767;
         int x3 = 2147483647;
-        long x4 = 2147483647273846232L;
+        long x4 = 2147483647273846232L; // 뒤에 L 붙여야 한다.
 
         // 실수 타입
-        float f1 = 3.123123123F; // 4byte -7자리
+        float f1 = 3.123123123F; // 4byte -7자리, 뒤에 F 붙어야 한다.
         double f2 = 3.123123123123; // 8byte = 15자리
 
         System.out.println("f1 = " + f1);

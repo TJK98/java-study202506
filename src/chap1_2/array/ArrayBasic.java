@@ -25,10 +25,10 @@ public class ArrayBasic {
         numbers[2] = (int) 66.7;
         numbers[3] = numbers[0] * 2;
         numbers[4] = 99;
-        System.out.println("numbers = " + numbers);
-        System.out.println(Arrays.toString(numbers));
-        // 배열 길이 확인
-        System.out.println(numbers.length);
+
+        System.out.println("numbers = " + numbers); // 배열이 나오지 않고 주소가 나옴
+        System.out.println(Arrays.toString(numbers)); // 배열을 확인하려면 toString(), import java.util.Arrays;가 필요
+        System.out.println(numbers.length); // 배열 길이 확인
 
         // 배열 순회
         System.out.println("==========================");
@@ -36,15 +36,14 @@ public class ArrayBasic {
         for (int i = 0; i < numbers.length; i++) {
             System.out.println("데이터 = " + numbers[i]);
         }
+
         System.out.println("==========================");
 
-        // enhanced for loop
+        // enhanced for loop (iter)
         for (int n : numbers) {
             System.out.println("n = " + n);
         }
-        for (int number : numbers) {
-            System.out.println("number = " + number);
-        }
+
         // number.forEach
         Arrays.stream(numbers).forEach(n -> System.out.println(n));
 
@@ -55,16 +54,16 @@ public class ArrayBasic {
 
         // 변수를 선언할 때만 new Type[] 생략 가능
         String[] pets = {"뽀삐", "나비", "춘식이"};
-        pets = new String[] {"삐뽀", "비나", "식춘이"};
+        pets = new String[] {"삐뽀", "비나", "식춘이"}; // new String[] 생략 불가
 
         System.out.println(Arrays.toString(pets));
 
-        foo(new String[] {"haha", "hoho"});
+        foo(new String[] {"haha", "hoho"}); // new String[] 생략 불가
 
         System.out.println("==========================");
 
         /*
-        # 배열의 기본 값
+            # 배열의 기본 값
             자바의 배열은 생성되는 순간 해당 공간에 기본값들을 채워넣음
             정수형: 0
             실수형: 0.0

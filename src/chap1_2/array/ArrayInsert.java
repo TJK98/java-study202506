@@ -19,15 +19,21 @@ public class ArrayInsert {
              [ 10, 50, 90, 100, 100, 150 ]
              [ 10, 50, 90, 90, 100, 150 ]
              [ 10, 50, 70, 90, 100, 150 ]
-
          */
+
+        // 중간 삽입 알고리즘
 
         // 1. 사이즈가 1칸 큰 배열 생성
         int[] temp = new int[numbers.length + 1];
+
         // 2. 기존 데이터 새 배열로 복사
         for (int i = 0; i < numbers.length; i++) {
             temp[i] = numbers[i];
         }
+
+//        temp[5] = temp[4];
+//        temp[4] = temp[3];
+//        temp[3] = temp[2];
 
         for (int i = numbers.length; i > targetIndex; i--) {
             temp[i] = temp[i - 1];

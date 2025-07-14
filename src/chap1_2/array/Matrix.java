@@ -29,13 +29,18 @@ public class Matrix {
         System.out.println("===========");
 
         System.out.println(matrix[0][2]);
+        // 2차원 배열 속 1차원 배열의 값 보기
         System.out.println(Arrays.toString(matrix[0]));
 
+        // 각 배열의 주소값
+        System.out.println(Arrays.toString(matrix));
+        // 각 배열의 내부값
         System.out.println(Arrays.deepToString(matrix));
 
         System.out.println("==========");
 
-        // 2차원 배열 순회
+        // 2차원 배열 순회, for문을 2번 돌려야 한다.
+        // iter 방식
         for (int[] arr : matrix) {
             for (int n : arr) {
                 System.out.print(n + " ");
@@ -43,7 +48,7 @@ public class Matrix {
             System.out.println();
         }
 
-        System.out.println("=============");
+        // fori 방식
         for (int i = 0; i < matrix.length; i++) {
             int[] arr = matrix[i];
             for (int j = 0; j < arr.length; j++) {

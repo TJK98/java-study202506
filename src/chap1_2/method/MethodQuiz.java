@@ -86,6 +86,7 @@ public class MethodQuiz {
         System.out.println(Arrays.toString(foods));
     }
 
+    // capacity에 1을 넣으면 push -1을 넣으면 pop
     static String[] copy(int capacity) {
         String[] tempArray = new String[foods.length + capacity];
 
@@ -109,6 +110,7 @@ public class MethodQuiz {
         }
         // 4. 주소값 이전
         foods = temp;
+        // temp = null; 을 안 해줘도 된다. temp가 지역 변수이기 때문에
     }
 
     // 배열 저장값으로 찾아서 삭제

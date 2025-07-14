@@ -11,6 +11,7 @@ public class ArraySearch {
         // 선형 탐색 : 0변부터 일일히 순차적으로 체크
         int index = -1;
         for (int i = 0; i < foods.length; i++) {
+            // 자바의 문자열 비교는 == 가 아닌 .equals(), == 는 주소 비교이다.
             if (foods[i].equals(target)) {
                 index = i;
                 break;

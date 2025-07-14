@@ -35,6 +35,7 @@ public class ArrayPush {
 
     }
 
+    // push 함수
     static void push(int[] arr, int newData) {
         arr = Arrays.copyOf(arr, arr.length + 1);
         arr[arr.length - 1] = newData;
